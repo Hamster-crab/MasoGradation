@@ -1,0 +1,3 @@
+Linuxの場合
+g++ src/main.cpp -o main -lGL -lGLEW -lglfw -lglut -lGLU && ./main
+
