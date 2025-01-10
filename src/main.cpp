@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "../include/camera.h"
+#include "../include/block.h"
 
 // 頂点データ（四角形）
 float vertices[] = {
