@@ -1,9 +1,9 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <GL/glew.h>
+#include "../include/glad/glad/glad.h"
 #include <GLFW/glfw3.h>
-#include <stb_image.h>
+#include "../include/stb_image.h"
 #include <string>
 
 class Block {
