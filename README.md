@@ -2,7 +2,7 @@
 
 ## Open Source Software なのでOSSです
 
-<GLFW/glfw3.h>
+<GLFW/glfw3.h> \n
 <glm/glm.hpp>
 <glm/gtc/matrix_transform.hpp>
 <glm/gtc/type_ptr.hpp>
