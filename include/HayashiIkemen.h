@@ -1,3 +1,0 @@
-#ifndef HAYASHIIKEMEN_H
-#define HAYASHIIKEMEN_H
-#endif
