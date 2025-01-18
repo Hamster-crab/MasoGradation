@@ -234,20 +234,26 @@ int main() {
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
         // タイルの描画
-        for (int x = -25; x <= 25; ++x) {
-            for (int z = -25; z <= 25; ++z) {
-                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0.0f, z));
+        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
+            for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, 0.0f, blockSampleZ));
                 unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
                 glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-                glm::vec3 tileColor = ((x + z) % 2 == 0) ? glm::vec3(1.0f) : glm::vec3(0.5f);
-                unsigned int colorLoc = glGetUniformLocation(shaderProgram, "tileColor");
-                glUniform3fv(colorLoc, 1, glm::value_ptr(tileColor));
-
+                
                 glBindVertexArray(VAO);
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             }
         }
+
+        std::cout << "サンプルブロックのx : " << blockSampleX
+                  << "\n" << "サンプルブロックのy : " << blockSampleY
+                  << "\n" << "サンプルブロックのz : " << blockSampleZ
+                  << "\n" << "カメラの向き : " << camera.front.x
+                  << "\n" << "プレイヤーのx : " << camera.position.x
+                  << "\n" << "プレイヤーのy : " << camera.position.y 
+                  << "\n" << "プレイヤーのz : " << camera.position.z
+                  << "\n"
+                  << std::endl;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
