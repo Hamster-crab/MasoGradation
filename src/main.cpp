@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+int blockSampleX, blockSampleY, blockSampleZ;
+
 // カメラクラス（Minecraft風操作）
 class Camera {
 public:
