@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-int blockSampleX, blockSampleY, blockSampleZ;
+double blockSampleX, blockSampleY, blockSampleZ;
 
 // カメラクラス（Minecraft風操作）
 class Camera {
@@ -235,10 +235,86 @@ int main() {
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
+        // タイルの描画（縦型の四角形）
+        for (blockSampleX = -0.5; blockSampleX <= -0.5; ++blockSampleX) {
+          for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
+        
+            // Z軸を中心に90度回転
+            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        
+            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+          }
+        }
+
+        // タイルの描画（縦型の四角形）
+        for (blockSampleX = 0.5; blockSampleX <= 0.5; ++blockSampleX) {
+          for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
+        
+            // Z軸を中心に90度回転
+            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        
+            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+          }
+        }
+
+        // タイルの描画（縦型の四角形）
+        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
+          for (blockSampleZ = 0.5; blockSampleZ <= 0.5; ++blockSampleZ) {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
+        
+            // Z軸を中心に90度回転
+            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        
+            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+          }
+        }
+
+        // タイルの描画（縦型の四角形）
+        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
+          for (blockSampleZ = -0.5; blockSampleZ <= -0.5; ++blockSampleZ) {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
+        
+            // Z軸を中心に90度回転
+            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        
+            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+          }
+        }
+
         // タイルの描画
         for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
             for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
-                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, 0.0f, blockSampleZ));
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 1, blockSampleZ));
+                unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+                
+                glBindVertexArray(VAO);
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            }
+        }
+
+        // タイルの描画
+        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
+            for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY, blockSampleZ));
                 unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
                 glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
                 
