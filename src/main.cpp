@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-double blockSampleX, blockSampleY, blockSampleZ;
+double blockSampleX, blockSampleY, blockSampleZ = 0;
 
 // カメラクラス（Minecraft風操作）
 class Camera {
@@ -75,13 +75,13 @@ private:
     }
 };
 
-// 頂点データ（四角形）
 float vertices[] = {
     -0.5f, 0.0f, -0.5f,  // 左下
      0.5f, 0.0f, -0.5f,  // 右下
      0.5f, 0.0f,  0.5f,  // 右上
     -0.5f, 0.0f,  0.5f   // 左上
 };
+
 
 unsigned int indices[] = {
     0, 1, 2, // 三角形1
@@ -90,25 +90,30 @@ unsigned int indices[] = {
 
 // シェーダープログラム
 const char* vertexShaderSource = R"(
-    #version 330 core
-    layout(location = 0) in vec3 aPos;
+  #version 330 core
+  layout(location = 0) in vec3 aPos;
 
-    uniform mat4 model;
-    uniform mat4 view;
-    uniform mat4 projection;
+  uniform mat4 model;       // モデル行列
+  uniform mat4 view;        // ビュー行列
+  uniform mat4 projection;  // 射影行列
+  uniform vec3 color;       // 色
 
-    void main() {
-        gl_Position = projection * view * model * vec4(aPos, 1.0);
-    }
+  out vec3 fragColor;
+
+  void main() {
+      gl_Position = projection * view * model * vec4(aPos, 1.0);
+      fragColor = color;
+  }
+
 )";
 
 const char* fragmentShaderSource = R"(
     #version 330 core
-    uniform vec3 tileColor;
+    in vec3 fragColor;
     out vec4 FragColor;
 
     void main() {
-        FragColor = vec4(tileColor, 1.0);
+        FragColor = vec4(fragColor, 1.0);
     }
 )";
 
@@ -156,10 +161,26 @@ void setupOpenGL() {
     glClearColor(0.5f, 0.7f, 1.0f, 1.0f);  // 空のような青色
 }
 
+void drawTile(unsigned int shaderProgram, unsigned int VAO, float x, float y, float z, float rotateAngle, float colorR, float colorG, float colorB, glm::vec3 rotateAxis) {
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+    model = glm::rotate(model, glm::radians(rotateAngle), rotateAxis);
+    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f)); // サイズ調整
+
+    unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+    unsigned int colorLoc = glGetUniformLocation(shaderProgram, "color");
+    glUniform3f(colorLoc, colorR, colorG, colorB); // 緑色
+
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+
 // メイン
 int main() {
     setupGLFW();
-    GLFWwindow* window = glfwCreateWindow(800, 600, "50x50 Tile Grid", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "MasoGradation", NULL, NULL);
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
@@ -235,91 +256,48 @@ int main() {
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-        // タイルの描画（縦型の四角形）
-        for (blockSampleX = -0.5; blockSampleX <= -0.5; ++blockSampleX) {
-          for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
-        
-            // Z軸を中心に90度回転
-            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        
-            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        
-            glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-          }
-        }
-
-        // タイルの描画（縦型の四角形）
-        for (blockSampleX = 0.5; blockSampleX <= 0.5; ++blockSampleX) {
-          for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
-        
-            // Z軸を中心に90度回転
-            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        
-            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        
-            glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-          }
-        }
-
-        // タイルの描画（縦型の四角形）
-        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
-          for (blockSampleZ = 0.5; blockSampleZ <= 0.5; ++blockSampleZ) {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
-        
-            // Z軸を中心に90度回転
-            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        
-            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        
-            glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-          }
-        }
-
-        // タイルの描画（縦型の四角形）
-        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
-          for (blockSampleZ = -0.5; blockSampleZ <= -0.5; ++blockSampleZ) {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 0.5, blockSampleZ));
-        
-            // Z軸を中心に90度回転
-            model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        
-            unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        
-            glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-          }
-        }
-
-        // タイルの描画
-        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
-            for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
-                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY - 1, blockSampleZ));
-                unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-                
-                glBindVertexArray(VAO);
-                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // まわり
+        // タイルを描画
+        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
+            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.2f, 0.2f, 0.2f, glm::vec3(180.0f, 0.0f, 0.0f));
             }
         }
 
-        // タイルの描画
-        for (blockSampleX = 0; blockSampleX <= 0; ++blockSampleX) {
-            for (blockSampleZ = 0; blockSampleZ <= 0; ++blockSampleZ) {
-                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(blockSampleX, blockSampleY, blockSampleZ));
-                unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-                glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-                
-                glBindVertexArray(VAO);
-                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // タイルを描画
+        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
+            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ, 90.0f, 80.0f, 80.0f, 80.0f, glm::vec3(180.0f, 0.0f, 0.0f));
+            }
+        }
+
+        // タイルを描画
+        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
+            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                drawTile(shaderProgram, VAO, blockSampleX - 1, blockSampleY + 0.5, blockSampleZ + 0.5, 180.0f, 80.0f, 80.0f, 80.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+            }
+        }
+
+        // タイルを描画
+        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
+            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                drawTile(shaderProgram, VAO, blockSampleX + 1, blockSampleY + 0.5, blockSampleZ + 0.5, 180.0f, 80.0f, 80.0f, 80.0f, glm::vec3(1.0f, 0.0f, 1.0f));
+            }
+        }
+
+        // じょうげ
+        
+        // タイルを描画
+        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
+            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(180.0f, 0.0f, 0.0f));
+            }
+        }
+
+        // タイルを描画
+        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
+            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(180.0f, 0.0f, 0.0f));
             }
         }
 
