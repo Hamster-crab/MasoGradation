@@ -256,47 +256,16 @@ int main() {
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-        // まわり
         // タイルを描画
         for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
             for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                // まわり
                 drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.2f, 0.2f, 0.2f, glm::vec3(180.0f, 0.0f, 0.0f));
-            }
-        }
-
-        // タイルを描画
-        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
-            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
                 drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ, 90.0f, 80.0f, 80.0f, 80.0f, glm::vec3(180.0f, 0.0f, 0.0f));
-            }
-        }
-
-        // タイルを描画
-        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
-            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
                 drawTile(shaderProgram, VAO, blockSampleX - 1, blockSampleY + 0.5, blockSampleZ + 0.5, 180.0f, 80.0f, 80.0f, 80.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-            }
-        }
-
-        // タイルを描画
-        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
-            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
                 drawTile(shaderProgram, VAO, blockSampleX + 1, blockSampleY + 0.5, blockSampleZ + 0.5, 180.0f, 80.0f, 80.0f, 80.0f, glm::vec3(1.0f, 0.0f, 1.0f));
-            }
-        }
-
-        // じょうげ
-        
-        // タイルを描画
-        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
-            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
+                // じょうげ
                 drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(180.0f, 0.0f, 0.0f));
-            }
-        }
-
-        // タイルを描画
-        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
-            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
                 drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(180.0f, 0.0f, 0.0f));
             }
         }
