@@ -258,16 +258,12 @@ int main() {
 
         // まわり
         // タイルを描画
-        for (blockSampleX = -5.0f; blockSampleX <= -5.0f; ++blockSampleX) {
-            for (blockSampleZ = -5.0f; blockSampleZ <= -5.0f; ++blockSampleZ) {
-                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.7f, 0.2f, 0.1f, glm::vec3(1.0f, 0.0f, 0.0f));
-                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ, 90.0f, 1.0f, 1.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-                drawTile(shaderProgram, VAO, blockSampleX - 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 1.0f, 0.0f, 0.4f, glm::vec3(0.0f, 0.0f, 1.0f));
-                drawTile(shaderProgram, VAO, blockSampleX + 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 0.3f, 1.0f, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-                drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
-            }
-        }
+        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.7f, 0.2f, 0.1f, glm::vec3(1.0f, 0.0f, 0.0f));
+        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ, 90.0f, 1.0f, 1.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        drawTile(shaderProgram, VAO, blockSampleX - 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 1.0f, 0.0f, 0.4f, glm::vec3(0.0f, 0.0f, 1.0f));
+        drawTile(shaderProgram, VAO, blockSampleX + 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 0.3f, 1.0f, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
 
         std::cout << "サンプルブロックのx : " << blockSampleX
                   << "\n" << "サンプルブロックのy : " << blockSampleY
