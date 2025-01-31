@@ -1,4 +1,5 @@
 CanvaのfontsなHayashi
+<br>
 漢字はだめです
 
 ひらがな : https://www.canva.com/design/DAGdv8wOFag/R7LP3yyFa11jNYyj4bOGWw/edit?utm_content=DAGdv8wOFag&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
