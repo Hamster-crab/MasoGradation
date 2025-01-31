@@ -1,3 +1,0 @@
-Linuxの場合
-g++ src/main.cpp src/glad.c -Iinclude -ldl -lGL -lGLEW -lglfw -lglut -lGLU -lfreetype -o main  && ./main
-
