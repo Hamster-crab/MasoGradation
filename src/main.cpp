@@ -1,3 +1,6 @@
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "../include/stb_truetype.h"
+#include <fstream>
 #include "../include/glad/glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -176,6 +179,114 @@ void drawTile(unsigned int shaderProgram, unsigned int VAO, float x, float y, fl
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
+// グローバル変数としてフォントのデータを持つ
+std::vector<stbtt_bakedchar> charData(256); // ASCII 文字に対応するキャラクター情報
+GLuint fontTexture;
+int textureWidth = 512;
+int textureHeight = 512;
+
+GLuint createFontTexture(const std::string &fontPath, const int fontSize) {
+    // フォントファイルの読み込み
+    std::ifstream fontFile(fontPath, std::ios::binary);  // std::ifstream のインスタンス作成
+    if (!fontFile.is_open()) {
+        std::cerr << "フォントファイルを開けませんでした: " << fontPath << std::endl;
+        return 0;
+    }
+
+    // フォントデータをバッファに読み込む
+    std::vector<unsigned char> fontBuffer((std::istreambuf_iterator<char>(fontFile)), std::istreambuf_iterator<char>());
+    
+    stbtt_fontinfo font;
+    stbtt_InitFont(&font, fontBuffer.data(), stbtt_GetFontOffsetForIndex(fontBuffer.data(), 0));
+
+    // テクスチャ用のビットマップ領域
+    std::vector<unsigned char> bitmap(textureWidth * textureHeight, 0); // 黒色で初期化
+
+    // 文字を 256 個レンダリング（ASCII）
+    float scale = stbtt_ScaleForPixelHeight(&font, fontSize);
+    stbtt_BakeFontBitmap(fontBuffer.data(), 0, fontSize, bitmap.data(), textureWidth, textureHeight, 32, 256, charData.data());
+
+    // OpenGL のテクスチャを生成
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // ビットマップを OpenGL テクスチャにアップロード
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, textureWidth, textureHeight, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap.data());
+
+    // テクスチャの設定
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    return textureID;
+}
+
+// 文字列を描画する関数
+void drawTextTwoDimensional(const std::string &text, float x, float y, GLuint fontTexture, int fontSize) {
+    GLuint VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+
+    std::vector<float> vertices;
+
+    // 各文字を描画
+    for (char c : text) {
+        if (c < 32 || c >= 128) continue; // 32文字以上か128文字未満の文字を描画（ASCII）
+        int index = c - 32;  // ' ' からのオフセット
+
+        stbtt_bakedchar &charInfo = charData[index];
+
+        // 文字の座標とテクスチャ座標を計算
+        float x0 = x + charInfo.xoff;
+        float y0 = y + charInfo.yoff;
+        float x1 = x0 + charInfo.xadvance;
+        float y1 = y0 + charInfo.yoff + charInfo.y1;
+
+        // 頂点の座標とテクスチャ座標
+        vertices.push_back(x0); vertices.push_back(y0); vertices.push_back(0.0f); // 左下
+        vertices.push_back(charInfo.x0 / textureWidth); vertices.push_back(charInfo.y0 / textureHeight);
+
+        vertices.push_back(x1); vertices.push_back(y0); vertices.push_back(0.0f); // 右下
+        vertices.push_back(charInfo.x1 / textureWidth); vertices.push_back(charInfo.y0 / textureHeight);
+
+        vertices.push_back(x1); vertices.push_back(y1); vertices.push_back(0.0f); // 右上
+        vertices.push_back(charInfo.x1 / textureWidth); vertices.push_back(charInfo.y1 / textureHeight);
+
+        vertices.push_back(x0); vertices.push_back(y1); vertices.push_back(0.0f); // 左上
+        vertices.push_back(charInfo.x0 / textureWidth); vertices.push_back(charInfo.y1 / textureHeight);
+
+        x += charInfo.xadvance;  // 次の文字へ
+    }
+
+    // VBO と VAO のバインド
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
+
+    // 頂点データの設定
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // テクスチャをバインドして描画
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, fontTexture);
+
+    // 描画
+    glDrawArrays(GL_QUADS, 0, vertices.size() / 5);
+
+    // クリーンアップ
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
+}
+
+
+
+
 
 // メイン
 int main() {
@@ -210,6 +321,10 @@ int main() {
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+
+    // フォントテクスチャを作成
+    fontTexture = createFontTexture("../fonts/GenShinGothic-Bold.ttf", 48);
+
 
     while (!glfwWindowShouldClose(window)) {
         // ESCキーでウィンドウを閉じる
@@ -256,6 +371,9 @@ int main() {
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
+        // 文字列を描画
+        drawTextTwoDimensional("Hello", 50.0f, 300.0f, fontTexture, 48); 
+
         // まわり
         // タイルを描画
         drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.7f, 0.2f, 0.1f, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -265,15 +383,19 @@ int main() {
         drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
 
-        std::cout << "サンプルブロックのx : " << blockSampleX
-                  << "\n" << "サンプルブロックのy : " << blockSampleY
-                  << "\n" << "サンプルブロックのz : " << blockSampleZ
-                  << "\n" << "カメラの向き : " << camera.front.x
-                  << "\n" << "プレイヤーのx : " << camera.position.x
-                  << "\n" << "プレイヤーのy : " << camera.position.y 
-                  << "\n" << "プレイヤーのz : " << camera.position.z
-                  << "\n"
-                  << std::endl;
+        
+        drawTextTwoDimensional("Hello", 5.0f, 5.0f, 3.0f, 3.0f);
+
+
+//        std::cout << "サンプルブロックのx : " << blockSampleX
+//                  << "\n" << "サンプルブロックのy : " << blockSampleY
+//                  << "\n" << "サンプルブロックのz : " << blockSampleZ
+//                  << "\n" << "カメラの向き : " << camera.front.x
+//                  << "\n" << "プレイヤーのx : " << camera.position.x
+//                  << "\n" << "プレイヤーのy : " << camera.position.y 
+//                  << "\n" << "プレイヤーのz : " << camera.position.z
+//                  << "\n"
+//                  << std::endl;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
