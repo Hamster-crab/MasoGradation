@@ -10,6 +10,9 @@
 #include <vector>
 
 double blockSampleX, blockSampleY, blockSampleZ = 0;
+int Bamen = 0; //0 = タイトル , 1 = ゲーム内
+bool Menu = false;
+
 
 // カメラクラス（Minecraft風操作）
 class Camera {
@@ -331,77 +334,86 @@ int main() {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(window, true);
         }
+        if (Bamen == 0)
+        {
+            // 描画処理
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glUseProgram(shaderProgram);
 
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+        else if (Bamen == 1)
+        {
         // 時間計算
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+            float currentFrame = glfwGetTime();
+            deltaTime = currentFrame - lastFrame;
+            lastFrame = currentFrame;
 
-        // マウス入力
-        double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
+            // マウス入力
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
 
-        float xOffset = xpos - lastX;
-        float yOffset = lastY - ypos; // y軸反転
-        lastX = xpos;
-        lastY = ypos;
+            float xOffset = xpos - lastX;
+            float yOffset = lastY - ypos; // y軸反転
+            lastX = xpos;
+            lastY = ypos;
 
-        camera.processMouseMovement(xOffset, yOffset);
+            camera.processMouseMovement(xOffset, yOffset);
 
-        // キー入力に基づいてカメラを操作
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) camera.processKeyboard("FORWARD", deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) camera.processKeyboard("BACKWARD", deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) camera.processKeyboard("LEFT", deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camera.processKeyboard("RIGHT", deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) camera.processKeyboard("UP", deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.processKeyboard("DOWN", deltaTime);
+            // キー入力に基づいてカメラを操作
+            if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) camera.processKeyboard("FORWARD", deltaTime);
+            if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) camera.processKeyboard("BACKWARD", deltaTime);
+            if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) camera.processKeyboard("LEFT", deltaTime);
+            if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camera.processKeyboard("RIGHT", deltaTime);
+            if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) camera.processKeyboard("UP", deltaTime);
+            if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.processKeyboard("DOWN", deltaTime);
 
-        // 描画処理
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            // 描画処理
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
+            glUseProgram(shaderProgram);
 
-        // モデル・ビュー・射影行列の設定
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-        glm::mat4 view = camera.getViewMatrix();
+            // モデル・ビュー・射影行列の設定
+            glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+            glm::mat4 view = camera.getViewMatrix();
 
-        unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
-        unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
+            unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+            unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
 
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+            glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+            glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-        // 文字列を描画
-        drawTextTwoDimensional("Hello", 50.0f, 300.0f, fontTexture, 48); 
+            // 文字列を描画
+            drawTextTwoDimensional("Hello", 50.0f, 300.0f, fontTexture, 48);
 
-        // まわり
-        // タイルを描画
-        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.7f, 0.2f, 0.1f, glm::vec3(1.0f, 0.0f, 0.0f));
-        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ, 90.0f, 1.0f, 1.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        drawTile(shaderProgram, VAO, blockSampleX - 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 1.0f, 0.0f, 0.4f, glm::vec3(0.0f, 0.0f, 1.0f));
-        drawTile(shaderProgram, VAO, blockSampleX + 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 0.3f, 1.0f, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
+            // まわり
+            // タイルを描画
+            drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.7f, 0.2f, 0.1f, glm::vec3(1.0f, 0.0f, 0.0f));
+            drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ, 90.0f, 1.0f, 1.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+            drawTile(shaderProgram, VAO, blockSampleX - 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 1.0f, 0.0f, 0.4f, glm::vec3(0.0f, 0.0f, 1.0f));
+            drawTile(shaderProgram, VAO, blockSampleX + 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 0.3f, 1.0f, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+            drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+            drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
 
         
-        drawTextTwoDimensional("Hello", 5.0f, 5.0f, 3.0f, 3.0f);
+            drawTextTwoDimensional("Hello", 5.0f, 5.0f, 3.0f, 3.0f);
 
 
-//        std::cout << "サンプルブロックのx : " << blockSampleX
-//                  << "\n" << "サンプルブロックのy : " << blockSampleY
-//                  << "\n" << "サンプルブロックのz : " << blockSampleZ
-//                  << "\n" << "カメラの向き : " << camera.front.x
-//                  << "\n" << "プレイヤーのx : " << camera.position.x
-//                  << "\n" << "プレイヤーのy : " << camera.position.y 
-//                  << "\n" << "プレイヤーのz : " << camera.position.z
-//                  << "\n"
-//                  << std::endl;
+            //std::cout << "サンプルブロックのx : " << blockSampleX
+            //            << "\n" << "サンプルブロックのy : " << blockSampleY
+            //                  << "\n" << "サンプルブロックのz : " << blockSampleZ
+            //                  << "\n" << "カメラの向き : " << camera.front.x
+            //                  << "\n" << "プレイヤーのx : " << camera.position.x
+            //                  << "\n" << "プレイヤーのy : " << camera.position.y
+            //                  << "\n" << "プレイヤーのz : " << camera.position.z
+            //                  << "\n"
+            //                  << std::endl;
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+            }
+        }
     glfwTerminate();
     return 0;
 }
-
