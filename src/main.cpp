@@ -1,73 +1,112 @@
 #include <raylib.h>
+#include <cmath>  // sinfおよびcosfを使用するために必要
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
 int main(void)
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenHeight = 600;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
 
-    // Define the camera to look into our 3d world
     Camera3D camera = { 0 };
-    camera.position = (Vector3){ 10.0f, 10.0f, 10.0f }; // Camera position
-    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
-    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
-    camera.fovy = 45.0f;                                // Camera field-of-view Y
-    camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
+    camera.position = (Vector3){ 0.0f, 2.0f, 4.0f };
+    camera.target = (Vector3){ 0.0f, 2.0f, 0.0f };
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
+    camera.fovy = 45.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
 
-    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
+    float cameraSpeed = 0.2f;
+    float cameraRotationY = 0.0f; // カメラの水平回転角度
+    float cameraRotationX = 0.0f; // カメラの垂直回転角度
+    const float mouseSensitivity = 0.003f; // マウス感度
 
-    DisableCursor();                    // Limit cursor to relative movement inside the window
+    bool sampleZimen = false;
 
-    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    DisableCursor();  // マウスカーソルを非表示にする
+    SetTargetFPS(60);
 
-    // Main game loop
-    while (!WindowShouldClose())        // Detect window close button or ESC key
+    while (!WindowShouldClose())        // ESCで強制終了
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        UpdateCamera(&camera, CAMERA_FREE);
+        Vector2 mouseDelta = GetMouseDelta();
 
-        if (IsKeyPressed('Z')) camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
-        //----------------------------------------------------------------------------------
+        cameraRotationY -= mouseDelta.x * mouseSensitivity; // 水平回転の符号を反転
+        cameraRotationX -= mouseDelta.y * mouseSensitivity; // 垂直回転の符号を反転
 
-        // Draw
-        //----------------------------------------------------------------------------------
+        // 垂直回転の制限
+        if (cameraRotationX > PI/2.0f - 0.01f) cameraRotationX = PI/2.0f - 0.01f;
+        if (cameraRotationX < -PI/2.0f + 0.01f) cameraRotationX = -PI/2.0f + 0.01f;
+
+        // カメラの移動
+        Vector3 forward = { sinf(cameraRotationY), 0.0f, cosf(cameraRotationY) };
+        Vector3 right = { cosf(cameraRotationY), 0.0f, -sinf(cameraRotationY) };
+
+        if (IsKeyDown(KEY_W)) {
+            camera.position.x += forward.x * cameraSpeed;
+            camera.position.z += forward.z * cameraSpeed;
+        }
+        if (IsKeyDown(KEY_S)) {
+            camera.position.x -= forward.x * cameraSpeed;
+            camera.position.z -= forward.z * cameraSpeed;
+        }
+        if (IsKeyDown(KEY_A)) {
+            camera.position.x -= right.x * cameraSpeed;
+            camera.position.z -= right.z * cameraSpeed;
+        }
+        if (IsKeyDown(KEY_D)) {
+            camera.position.x += right.x * cameraSpeed;
+            camera.position.z += right.z * cameraSpeed;
+        }
+        if (IsKeyDown(KEY_SPACE)) camera.position.y += cameraSpeed;
+        if (IsKeyDown(KEY_LEFT_SHIFT)) camera.position.y -= cameraSpeed;
+
+        if (IsKeyDown(KEY_F3)) if (IsKeyPressed(KEY_B))
+        {
+            if (sampleZimen)
+            {
+                sampleZimen = false;
+            }
+            else if (!sampleZimen)
+            {
+                sampleZimen = true;
+            }
+        }
+
+        // カメラのターゲット位置を更新
+        camera.target = (Vector3){
+            camera.position.x + cosf(cameraRotationX) * sinf(cameraRotationY),
+            camera.position.y + sinf(cameraRotationX),
+            camera.position.z + cosf(cameraRotationX) * cosf(cameraRotationY)
+        };
+
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
 
             BeginMode3D(camera);
 
-                DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
-                DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+                DrawCube((Vector3){ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, RED);
+                DrawCubeWires((Vector3){ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, MAROON);
 
-                DrawGrid(10, 1.0f);
+                if (sampleZimen)
+                {
+                    // グリッドの描画
+                    for (int x = -10; x <= 10; x++) {
+                        for (int z = -10; z <= 10; z++) {
+                            Color color = ((x + z) % 2 == 0) ? LIGHTGRAY : WHITE;
+                            DrawCube((Vector3){ x, 0.0f, z }, 1.0f, 0.1f, 1.0f, color);
+                        }
+                    }
+                }
 
             EndMode3D();
 
-            DrawRectangle( 10, 10, 320, 93, Fade(SKYBLUE, 0.5f));
-            DrawRectangleLines( 10, 10, 320, 93, BLUE);
-
-            DrawText("Free camera default controls:", 20, 20, 10, BLACK);
-            DrawText("- Mouse Wheel to Zoom in-out", 40, 40, 10, DARKGRAY);
-            DrawText("- Mouse Wheel Pressed to Pan", 40, 60, 10, DARKGRAY);
-            DrawText("- Z to zoom to (0, 0, 0)", 40, 80, 10, DARKGRAY);
+            // カメラ位置の表示
+            DrawText(TextFormat("Camera Position: [%.2f, %.2f, %.2f]", camera.position.x, camera.position.y, camera.position.z), 10, 10, 20, DARKGRAY);
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+    CloseWindow();
 
     return 0;
 }
