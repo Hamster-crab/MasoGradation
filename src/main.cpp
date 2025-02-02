@@ -21,89 +21,126 @@ int main(void)
     const float mouseSensitivity = 0.003f; // マウス感度
 
     bool sampleZimen = false;
+    bool title = true;
 
-    DisableCursor();  // マウスカーソルを非表示にする
+    Image BackImageLogo = LoadImage("resources/Title/BackImage/1738500159090.png");
+    ImageResize(&BackImageLogo, 800, 600);
+    Texture2D BackTextureLogo = LoadTextureFromImage(BackImageLogo);
+    UnloadImage(BackImageLogo);
+
+    Image BackImageButton = LoadImage("resources/Title/BackImage/1738499633490.png");
+    ImageResize(&BackImageButton, 800, 600);
+    Texture2D BackTextureButton = LoadTextureFromImage(BackImageButton);
+    UnloadImage(BackImageButton);
+
+    Image BackImage = LoadImage("resources/Title/BackImage/1738500276699.png");
+    ImageResize(&BackImage, 800, 600);
+    Texture2D BackTexture = LoadTextureFromImage(BackImage);
+    UnloadImage(BackImage);
+
+    Image BackImageSample = LoadImage("resources/Title/BackImage/BackImage.png");
+    ImageResize(&BackImageSample, 800, 600);
+    Texture2D BackTextureSample = LoadTextureFromImage(BackImageSample);
+    UnloadImage(BackImageSample);
+
+
     SetTargetFPS(60);
 
     while (!WindowShouldClose())        // ESCで強制終了
     {
-        Vector2 mouseDelta = GetMouseDelta();
-
-        cameraRotationY -= mouseDelta.x * mouseSensitivity; // 水平回転の符号を反転
-        cameraRotationX -= mouseDelta.y * mouseSensitivity; // 垂直回転の符号を反転
-
-        // 垂直回転の制限
-        if (cameraRotationX > PI/2.0f - 0.01f) cameraRotationX = PI/2.0f - 0.01f;
-        if (cameraRotationX < -PI/2.0f + 0.01f) cameraRotationX = -PI/2.0f + 0.01f;
-
-        // カメラの移動
-        Vector3 forward = { sinf(cameraRotationY), 0.0f, cosf(cameraRotationY) };
-        Vector3 right = { cosf(cameraRotationY), 0.0f, -sinf(cameraRotationY) };
-
-        if (IsKeyDown(KEY_W)) {
-            camera.position.x += forward.x * cameraSpeed;
-            camera.position.z += forward.z * cameraSpeed;
-        }
-        if (IsKeyDown(KEY_S)) {
-            camera.position.x -= forward.x * cameraSpeed;
-            camera.position.z -= forward.z * cameraSpeed;
-        }
-        if (IsKeyDown(KEY_A)) {
-            camera.position.x += right.x * cameraSpeed;
-            camera.position.z += right.z * cameraSpeed;
-        }
-        if (IsKeyDown(KEY_D)) {
-            camera.position.x -= right.x * cameraSpeed;
-            camera.position.z -= right.z * cameraSpeed;
-        }
-        if (IsKeyDown(KEY_SPACE)) camera.position.y += cameraSpeed;
-        if (IsKeyDown(KEY_LEFT_SHIFT)) camera.position.y -= cameraSpeed;
-
-        if (IsKeyDown(KEY_F3)) if (IsKeyPressed(KEY_B))
+        if (title)
         {
-            if (sampleZimen)
-            {
-                sampleZimen = false;
-            }
-            else if (!sampleZimen)
-            {
-                sampleZimen = true;
-            }
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+
+            //DrawTexture(BackTexture, 0, 0, WHITE);
+            //DrawTexture(BackTextureLogo, 0, 0, WHITE);
+            //DrawTexture(BackTextureButton, 0, 0, WHITE);
+            DrawTexture(BackTextureSample, 0, 0, WHITE);
+
+            EndDrawing();
         }
+        else if (!title)
+        {
+            DisableCursor();  // マウスカーソルを非表示にする
+            Vector2 mouseDelta = GetMouseDelta();
 
-        // カメラのターゲット位置を更新
-        camera.target = (Vector3){
-            camera.position.x + cosf(cameraRotationX) * sinf(cameraRotationY),
-            camera.position.y + sinf(cameraRotationX),
-            camera.position.z + cosf(cameraRotationX) * cosf(cameraRotationY)
-        };
+            cameraRotationY -= mouseDelta.x * mouseSensitivity; // 水平回転の符号を反転
+            cameraRotationX -= mouseDelta.y * mouseSensitivity; // 垂直回転の符号を反転
 
-        BeginDrawing();
+            // 垂直回転の制限
+            if (cameraRotationX > PI/2.0f - 0.01f) cameraRotationX = PI/2.0f - 0.01f;
+            if (cameraRotationX < -PI/2.0f + 0.01f) cameraRotationX = -PI/2.0f + 0.01f;
+
+            // カメラの移動
+            Vector3 forward = { sinf(cameraRotationY), 0.0f, cosf(cameraRotationY) };
+            Vector3 right = { cosf(cameraRotationY), 0.0f, -sinf(cameraRotationY) };
+
+            if (IsKeyDown(KEY_W)) {
+                camera.position.x += forward.x * cameraSpeed;
+                camera.position.z += forward.z * cameraSpeed;
+            }
+            if (IsKeyDown(KEY_S)) {
+                camera.position.x -= forward.x * cameraSpeed;
+                camera.position.z -= forward.z * cameraSpeed;
+            }
+            if (IsKeyDown(KEY_A)) {
+                camera.position.x += right.x * cameraSpeed;
+                camera.position.z += right.z * cameraSpeed;
+            }
+            if (IsKeyDown(KEY_D)) {
+                camera.position.x -= right.x * cameraSpeed;
+                camera.position.z -= right.z * cameraSpeed;
+            }
+            if (IsKeyDown(KEY_SPACE)) camera.position.y += cameraSpeed;
+            if (IsKeyDown(KEY_LEFT_SHIFT)) camera.position.y -= cameraSpeed;
+
+            if (IsKeyDown(KEY_F3)) if (IsKeyPressed(KEY_B))
+            {
+                if (sampleZimen)
+                {
+                    sampleZimen = false;
+                }
+                else if (!sampleZimen)
+                {
+                    sampleZimen = true;
+                }
+            }
+
+            // カメラのターゲット位置を更新
+            camera.target = (Vector3){
+                camera.position.x + cosf(cameraRotationX) * sinf(cameraRotationY),
+                camera.position.y + sinf(cameraRotationX),
+                camera.position.z + cosf(cameraRotationX) * cosf(cameraRotationY)
+            };
+
+            BeginDrawing();
 
             ClearBackground(RAYWHITE);
 
             BeginMode3D(camera);
 
-                DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
-                DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
+            DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
+            DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
 
-                if (sampleZimen)
-                {
-                    // グリッドの描画
-                    for (int x = -10; x <= 10; x++) {
-                        for (int z = -10; z <= 10; z++) {
-                            Color color = ((x + z) % 2 == 0) ? LIGHTGRAY : WHITE;
-                            DrawCube((Vector3){ x, 0.0f, z }, 1.0f, 0.1f, 1.0f, color);
-                        }
+            if (sampleZimen)
+            {
+                //グリッドの描画
+                for (int x = -10; x <= 10; x++) {
+                    for (int z = -10; z <= 10; z++) {
+                        Color color = ((x + z) % 2 == 0) ? LIGHTGRAY : WHITE;
+                        DrawCube((Vector3){ static_cast<float>(x), 0.0f, static_cast<float>(z) }, 1.0f, 0.1f, 1.0f, color);
                     }
                 }
+            }
 
-            EndMode3D();
+                EndMode3D();
 
-            // カメラ位置の表示
-            DrawText(TextFormat("Camera Position: [%.2f, %.2f, %.2f]", camera.position.x, camera.position.y, camera.position.z), 10, 10, 20, DARKGRAY);
+                // カメラ位置の表示
+                DrawText(TextFormat("Camera Position: [%.2f, %.2f, %.2f]", camera.position.x, camera.position.y, camera.position.z), 10, 10, 20, DARKGRAY);
 
-        EndDrawing();
+            EndDrawing();
+            }
     }
 
     CloseWindow();
