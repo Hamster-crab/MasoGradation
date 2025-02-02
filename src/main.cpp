@@ -384,7 +384,7 @@ int main() {
     // フォントテクスチャを作成
     fontTexture = createFontTexture("/home/kitanohideaki/Documents/Git/MasoGradation/fonts/main.ttf", 48);
 
-    unsigned int textureID = createTexture("resources/Title/Title.png", 100, 100);
+    unsigned int textureID = createTexture("resources/Title/map_02.png", 100, 100);
 
     std::cout << "ロード中\n";
 
