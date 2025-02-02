@@ -8,10 +8,23 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vector>
+#define STB_IMAGE_IMPLEMENTATION
+#include "../include/stb_image.h"
+#include <filesystem>
+
+
+namespace fs = std::filesystem;
 
 double blockSampleX, blockSampleY, blockSampleZ = 0;
 int Bamen = 0; //0 = タイトル , 1 = ゲーム内
 bool Menu = false;
+
+
+std::string getBasePath() {
+    // 実行ファイルのパスを取得
+    fs::path exePath = fs::current_path();
+    return exePath.string();
+}
 
 
 // カメラクラス（Minecraft風操作）
@@ -167,6 +180,7 @@ void setupOpenGL() {
     glClearColor(0.5f, 0.7f, 1.0f, 1.0f);  // 空のような青色
 }
 
+
 void drawTile(unsigned int shaderProgram, unsigned int VAO, float x, float y, float z, float rotateAngle, float colorR, float colorG, float colorB, glm::vec3 rotateAxis) {
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
     model = glm::rotate(model, glm::radians(rotateAngle), rotateAxis);
@@ -288,6 +302,48 @@ void drawTextTwoDimensional(const std::string &text, float x, float y, GLuint fo
 }
 
 
+// テクスチャ作成関数
+unsigned int createTexture(const char* texturePath, int width, int height) {
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // 画像データの読み込み
+    int nrChannels;
+    unsigned char* data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+        std::cout << "STB error: " << stbi_failure_reason() << std::endl;
+    }
+    stbi_image_free(data);
+
+    return textureID;
+}
+
+// テクスチャを描画する関数
+void renderTexture(unsigned int textureID, float x, float y, float width, float height, unsigned int shaderProgram, unsigned int VAO) {
+    // 使用するテクスチャを設定
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // シェーダープログラムを使用
+    glUseProgram(shaderProgram);
+
+    // モデル行列を作成して位置を変更
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(x, y, 0.0f));  // x, y の位置に移動
+
+    // シェーダーのモデル行列に送信
+    unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+    // VAOをバインドして描画
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
 
 
 
@@ -326,8 +382,11 @@ int main() {
     float lastFrame = 0.0f;
 
     // フォントテクスチャを作成
-    fontTexture = createFontTexture("../fonts/GenShinGothic-Bold.ttf", 48);
+    fontTexture = createFontTexture("/home/kitanohideaki/Documents/Git/MasoGradation/fonts/main.ttf", 48);
 
+    unsigned int textureID = createTexture("resources/Title/Title.png", 100, 100);
+
+    std::cout << "ロード中\n";
 
     while (!glfwWindowShouldClose(window)) {
         // ESCキーでウィンドウを閉じる
@@ -339,6 +398,8 @@ int main() {
             // 描画処理
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glUseProgram(shaderProgram);
+
+            renderTexture(textureID, 1.0f, 1.0f, 100, 100, shaderProgram, VAO);
 
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -387,6 +448,8 @@ int main() {
             // 文字列を描画
             drawTextTwoDimensional("Hello", 50.0f, 300.0f, fontTexture, 48);
 
+            std::cout << "A" << std::endl;
+
             // まわり
             // タイルを描画
             drawTile(shaderProgram, VAO, blockSampleX, blockSampleY, blockSampleZ + 1, 90.0f, 0.7f, 0.2f, 0.1f, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -395,7 +458,6 @@ int main() {
             drawTile(shaderProgram, VAO, blockSampleX + 0.5, blockSampleY, blockSampleZ + 0.5, 90.0f, 0.3f, 1.0f, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
             drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
             drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
-
         
             drawTextTwoDimensional("Hello", 5.0f, 5.0f, 3.0f, 3.0f);
 
