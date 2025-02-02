@@ -16,7 +16,7 @@
 namespace fs = std::filesystem;
 
 double blockSampleX, blockSampleY, blockSampleZ = 0;
-int Bamen = 0; //0 = タイトル , 1 = ゲーム内
+int Bamen = 1; //0 = タイトル , 1 = ゲーム内
 bool Menu = false;
 
 
@@ -136,7 +136,6 @@ const char* fragmentShaderSource = R"(
     }
 )";
 
-// シェーダー作成関数
 unsigned int compileShader(unsigned int type, const char* source) {
     unsigned int shader = glCreateShader(type);
     glShaderSource(shader, 1, &source, NULL);
@@ -160,6 +159,14 @@ unsigned int createShaderProgram(const char* vertexSource, const char* fragmentS
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
+
+    int success;
+    char infoLog[512];
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "Shader Program Linking Failed\n" << infoLog << std::endl;
+    }
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -384,7 +391,7 @@ int main() {
     // フォントテクスチャを作成
     fontTexture = createFontTexture("/home/kitanohideaki/Documents/Git/MasoGradation/fonts/main.ttf", 48);
 
-    unsigned int textureID = createTexture("resources/Title/map_02.png", 100, 100);
+    unsigned int textureID = createTexture("resources/Title/Title.png", 100, 100);
 
     std::cout << "ロード中\n";
 
@@ -400,6 +407,7 @@ int main() {
             glUseProgram(shaderProgram);
 
             renderTexture(textureID, 1.0f, 1.0f, 100, 100, shaderProgram, VAO);
+            std::cout << "ロード完了" << std::endl;
 
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -448,7 +456,11 @@ int main() {
             // 文字列を描画
             drawTextTwoDimensional("Hello", 50.0f, 300.0f, fontTexture, 48);
 
-            std::cout << "A" << std::endl;
+            GLenum error = glGetError();
+            if (error != GL_NO_ERROR) {
+                std::cout << "OpenGL Error: " << error << std::endl;
+            }
+
 
             // まわり
             // タイルを描画
@@ -459,7 +471,9 @@ int main() {
             drawTile(shaderProgram, VAO, blockSampleX, blockSampleY + 0.5, blockSampleZ + 0.5, 0.5f, 0.0f, 0.0f, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
             drawTile(shaderProgram, VAO, blockSampleX, blockSampleY - 0.5, blockSampleZ + 0.5, 180.0f, 0.5f, 0.2f, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f));
         
-            drawTextTwoDimensional("Hello", 5.0f, 5.0f, 3.0f, 3.0f);
+            renderTexture(textureID, 1.0f, 1.0f, 100, 100, shaderProgram, VAO);
+
+            // drawTextTwoDimensional("Hello", 5.0f, 5.0f, 3.0f, 3.0f);
 
 
             //std::cout << "サンプルブロックのx : " << blockSampleX
