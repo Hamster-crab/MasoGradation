@@ -49,12 +49,12 @@ int main(void)
             camera.position.z -= forward.z * cameraSpeed;
         }
         if (IsKeyDown(KEY_A)) {
-            camera.position.x -= right.x * cameraSpeed;
-            camera.position.z -= right.z * cameraSpeed;
-        }
-        if (IsKeyDown(KEY_D)) {
             camera.position.x += right.x * cameraSpeed;
             camera.position.z += right.z * cameraSpeed;
+        }
+        if (IsKeyDown(KEY_D)) {
+            camera.position.x -= right.x * cameraSpeed;
+            camera.position.z -= right.z * cameraSpeed;
         }
         if (IsKeyDown(KEY_SPACE)) camera.position.y += cameraSpeed;
         if (IsKeyDown(KEY_LEFT_SHIFT)) camera.position.y -= cameraSpeed;
@@ -84,8 +84,8 @@ int main(void)
 
             BeginMode3D(camera);
 
-                DrawCube((Vector3){ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, RED);
-                DrawCubeWires((Vector3){ 0.0f, 0.0f, 0.0f }, 2.0f, 2.0f, 2.0f, MAROON);
+                DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
+                DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
 
                 if (sampleZimen)
                 {
