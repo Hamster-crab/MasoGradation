@@ -23,20 +23,9 @@ int main(void)
     bool sampleZimen = false;
     bool title = true;
 
-    Image BackImageLogo = LoadImage("resources/Title/BackImage/1738500159090.png");
-    ImageResize(&BackImageLogo, 800, 600);
-    Texture2D BackTextureLogo = LoadTextureFromImage(BackImageLogo);
-    UnloadImage(BackImageLogo);
-
-    Image BackImageButton = LoadImage("resources/Title/BackImage/1738499633490.png");
-    ImageResize(&BackImageButton, 800, 600);
-    Texture2D BackTextureButton = LoadTextureFromImage(BackImageButton);
-    UnloadImage(BackImageButton);
-
-    Image BackImage = LoadImage("resources/Title/BackImage/1738500276699.png");
-    ImageResize(&BackImage, 800, 600);
-    Texture2D BackTexture = LoadTextureFromImage(BackImage);
-    UnloadImage(BackImage);
+    Rectangle startButton = { 300, 360, 230, 80 };
+    Rectangle startSetting = { 350, 450, 123, 65 };
+    Rectangle startEnd = { 350, 528, 123, 65 };
 
     Image BackImageSample = LoadImage("resources/Title/BackImage/BackImage.png");
     ImageResize(&BackImageSample, 800, 600);
@@ -50,6 +39,14 @@ int main(void)
     {
         if (title)
         {
+            Vector2 mousePoint = GetMousePosition();
+            // マウス座標を小さな矩形に変換
+            Rectangle mouseRect = { mousePoint.x, mousePoint.y, 1, 1 };
+            // 当たり判定
+            bool callStart = CheckCollisionRecs(startButton, mouseRect);
+            bool callSetting = CheckCollisionRecs(startSetting, mouseRect);
+            bool callEnd = CheckCollisionRecs(startEnd, mouseRect);
+
             BeginDrawing();
             ClearBackground(RAYWHITE);
 
@@ -57,6 +54,17 @@ int main(void)
             //DrawTexture(BackTextureLogo, 0, 0, WHITE);
             //DrawTexture(BackTextureButton, 0, 0, WHITE);
             DrawTexture(BackTextureSample, 0, 0, WHITE);
+
+            DrawRectangle(startButton.x, startButton.y, startButton.width, startButton.height, GREEN);
+            DrawRectangle(startSetting.x, startSetting.y, startSetting.width, startSetting.height, GREEN);
+            DrawRectangle(startEnd.x, startEnd.y, startEnd.width, startEnd.height, GREEN);
+
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+            {
+                if (callStart) break;
+                if (callSetting) break;
+                if (callEnd) break;
+            }
 
             EndDrawing();
         }
