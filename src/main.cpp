@@ -6,7 +6,7 @@ int main(void)
     const int screenWidth = 800;
     const int screenHeight = 600;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
+    InitWindow(screenWidth, screenHeight, "Maso Gradation");
 
     Camera3D camera = { 0 };
     camera.position = (Vector3){ 0.0f, 2.0f, 4.0f };
@@ -66,7 +66,7 @@ int main(void)
 
             if (setting)
             {
-                DrawRectangle(10, 10 ,100, 100, WHITE);
+                DrawRectangle(0, 0 ,screenWidth, screenHeight, GRAY);
             }
 
             EndDrawing();
