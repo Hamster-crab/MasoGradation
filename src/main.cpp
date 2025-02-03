@@ -23,6 +23,8 @@ int main(void)
     bool sampleZimen = false;
     bool title = true;
 
+    bool setting = false;
+
     Rectangle startButton = { 300, 360, 230, 80 };
     Rectangle startSetting = { 350, 450, 123, 65 };
     Rectangle startEnd = { 350, 528, 123, 65 };
@@ -55,15 +57,20 @@ int main(void)
             //DrawTexture(BackTextureButton, 0, 0, WHITE);
             DrawTexture(BackTextureSample, 0, 0, WHITE);
 
-            DrawRectangle(startButton.x, startButton.y, startButton.width, startButton.height, GREEN);
-            DrawRectangle(startSetting.x, startSetting.y, startSetting.width, startSetting.height, GREEN);
-            DrawRectangle(startEnd.x, startEnd.y, startEnd.width, startEnd.height, GREEN);
-
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
                 if (callStart) break;
-                if (callSetting) break;
+                if (callSetting)
+                {
+                    if (!setting) setting = true;
+                    else if (setting) setting = false;
+                };
                 if (callEnd) break;
+            }
+
+            if (setting)
+            {
+                DrawRectangle(10, 10 ,100, 100, WHITE);
             }
 
             EndDrawing();
