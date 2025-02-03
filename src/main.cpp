@@ -60,11 +60,7 @@ int main(void)
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
                 if (callStart) break;
-                if (callSetting)
-                {
-                    if (!setting) setting = true;
-                    else if (setting) setting = false;
-                };
+                if (callSetting) if (!setting) setting = true;
                 if (callEnd) break;
             }
 
