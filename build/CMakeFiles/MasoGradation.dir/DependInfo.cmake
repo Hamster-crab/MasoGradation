@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/kitanohideaki/Documents/Git/MasoGradation/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.o" "gcc" "CMakeFiles/main.dir/src/main.cpp.o.d"
+  "/home/kitanohideaki/Documents/Git/MasoGradation/src/main.cpp" "CMakeFiles/MasoGradation.dir/src/main.cpp.o" "gcc" "CMakeFiles/MasoGradation.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

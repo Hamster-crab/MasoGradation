@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /home/kitanohideaki/Documents/Git/MasoGradation/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/main.dir/all
+all: CMakeFiles/MasoGradation.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/main.dir/clean
+clean: CMakeFiles/MasoGradation.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/main.dir
+# Target rules for target CMakeFiles/MasoGradation.dir
 
 # All Build rule for target.
-CMakeFiles/main.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/kitanohideaki/Documents/Git/MasoGradation/build/CMakeFiles --progress-num=1,2 "Built target main"
-.PHONY : CMakeFiles/main.dir/all
+CMakeFiles/MasoGradation.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/kitanohideaki/Documents/Git/MasoGradation/build/CMakeFiles --progress-num=1,2 "Built target MasoGradation"
+.PHONY : CMakeFiles/MasoGradation.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/main.dir/rule: cmake_check_build_system
+CMakeFiles/MasoGradation.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kitanohideaki/Documents/Git/MasoGradation/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/MasoGradation.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kitanohideaki/Documents/Git/MasoGradation/build/CMakeFiles 0
-.PHONY : CMakeFiles/main.dir/rule
+.PHONY : CMakeFiles/MasoGradation.dir/rule
 
 # Convenience name for target.
-main: CMakeFiles/main.dir/rule
-.PHONY : main
+MasoGradation: CMakeFiles/MasoGradation.dir/rule
+.PHONY : MasoGradation
 
 # clean rule for target.
-CMakeFiles/main.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
-.PHONY : CMakeFiles/main.dir/clean
+CMakeFiles/MasoGradation.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/clean
+.PHONY : CMakeFiles/MasoGradation.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

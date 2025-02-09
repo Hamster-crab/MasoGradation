@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/MasoGradation.dir/src/main.cpp.o -o MasoGradation  /usr/lib64/libraylib.so -L/usr/lib64 -lraylib
