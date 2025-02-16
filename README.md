@@ -2,4 +2,7 @@
 
 ## Open Source Software なのでOSSです
 
-raylib
+## mainブランチに直接コードをぶち込まないでください
+
+### 使用include
+### :raylib
