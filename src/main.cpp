@@ -21,7 +21,7 @@ int main(void)
     const float mouseSensitivity = 0.003f; // マウス感度
 
     bool sampleZimen = false;
-    bool title = true;
+    bool title = false;
 
     bool setting = false;
 
@@ -59,8 +59,8 @@ int main(void)
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
-                if (callStart) break;
-                if (callSetting) if (!setting) setting = true;
+                if (callStart) title = false;
+                if (callSetting) setting = true;
                 if (callEnd) break;
             }
 
@@ -78,6 +78,7 @@ int main(void)
 
             cameraRotationY -= mouseDelta.x * mouseSensitivity; // 水平回転の符号を反転
             cameraRotationX -= mouseDelta.y * mouseSensitivity; // 垂直回転の符号を反転
+
 
             // 垂直回転の制限
             if (cameraRotationX > PI/2.0f - 0.01f) cameraRotationX = PI/2.0f - 0.01f;
@@ -124,6 +125,7 @@ int main(void)
                 camera.position.y + sinf(cameraRotationX),
                 camera.position.z + cosf(cameraRotationX) * cosf(cameraRotationY)
             };
+
 
             BeginDrawing();
 
