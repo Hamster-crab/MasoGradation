@@ -26,15 +26,18 @@ int main(void)
     bool sampleZimen = false;
     bool title = true;
 
-    bool sound = true;
+    bool sound = false;
+    bool mouseHayashi = true;
 
     bool setting = false;
+
 
     Rectangle startButton = { 300, 360, 230, 80 };
     Rectangle startSetting = { 350, 450, 123, 65 };
     Rectangle startEnd = { 350, 528, 123, 65 };
 
     Rectangle soundRect = { 200, 50, 50, 50 };
+    Rectangle mouseHayashiRect = { 200, 150, 50, 50 };
 
     Image BackImageSample = LoadImage("resources/Title/BackImage/BackImage.png");
     ImageResize(&BackImageSample, 800, 600);
@@ -62,6 +65,7 @@ int main(void)
             bool callSetting = CheckCollisionRecs(startSetting, mouseRect);
             bool callEnd = CheckCollisionRecs(startEnd, mouseRect);
             bool soundTF = CheckCollisionRecs(soundRect, mouseRect);
+            bool mouseHayashi = CheckCollisionRecs(mouseHayashiRect, mouseRect);
             
             BeginDrawing();
             ClearBackground(RAYWHITE);
@@ -95,6 +99,10 @@ int main(void)
                 DrawRectangle (soundRect.x, soundRect.y, soundRect.width, soundRect.height, BLACK);
                 DrawRectangle (205, 56, 40, 38, WHITE);
                 if (sound) DrawRectangle (210, 61, 30, 30, GREEN);
+
+                DrawText("Hayashi", 5, 150, 50, WHITE);
+                DrawRectangle (mouseHayashiRect.x, mouseHayashiRect.y, mouseHayashiRect.width, mouseHayashiRect.height, BLACK);
+                //DrawRectangle (mouseHayashiRect.x + 5)
             }
 
             EndDrawing();
