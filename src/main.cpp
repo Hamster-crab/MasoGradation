@@ -8,6 +8,9 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Maso Gradation");
 
+    //SetAudioStreamBufferSizeDefault(4096); 
+    InitAudioDevice();
+
     Camera3D camera = { 0 };
     camera.position = (Vector3){ 0.0f, 2.0f, 4.0f };
     camera.target = (Vector3){ 0.0f, 2.0f, 0.0f };
@@ -38,13 +41,19 @@ int main(void)
     Texture2D BackTextureSample = LoadTextureFromImage(BackImageSample);
     UnloadImage(BackImageSample);
 
+    Music titleMusic = LoadMusicStream("Music/IkeIke/hAYASHI.mp3");
+    titleMusic.stream.sampleRate = 44100; 
+    SetMusicVolume(titleMusic, 1.0f);
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose())        // ESCで強制終了
     {
+        if (sound && !IsMusicStreamPlaying(titleMusic)) PlayMusicStream(titleMusic);
+        UpdateMusicStream(titleMusic);
         if (title)
         {
+            if (sound) PlayMusicStream(titleMusic);
             Vector2 mousePoint = GetMousePosition();
             // マウス座標を小さな矩形に変換
             Rectangle mouseRect = { mousePoint.x, mousePoint.y, 1, 1 };
@@ -175,6 +184,8 @@ int main(void)
             }
     }
 
+    UnloadMusicStream(titleMusic);
+    CloseAudioDevice();
     CloseWindow();
 
     return 0;
