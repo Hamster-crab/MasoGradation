@@ -68,9 +68,10 @@ int main(void)
             {
                 DrawRectangle(0, 0 ,screenWidth, screenHeight, GRAY);
                 
-                DrawText("volume", 5, 50, 50, WHITE);
+                DrawText("Sound", 5, 50, 50, WHITE);
                 DrawRectangle (200, 50, 50, 50, BLACK);
                 DrawRectangle (205, 56, 40, 38, WHITE);
+                DrawRectangle (210, 61, 30, 30, GREEN);
             }
 
             EndDrawing();
