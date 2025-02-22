@@ -23,11 +23,15 @@ int main(void)
     bool sampleZimen = false;
     bool title = true;
 
+    bool sound = true;
+
     bool setting = false;
 
     Rectangle startButton = { 300, 360, 230, 80 };
     Rectangle startSetting = { 350, 450, 123, 65 };
     Rectangle startEnd = { 350, 528, 123, 65 };
+
+    Rectangle soundRect = { 200, 50, 50, 50 };
 
     Image BackImageSample = LoadImage("resources/Title/BackImage/BackImage.png");
     ImageResize(&BackImageSample, 800, 600);
@@ -48,7 +52,8 @@ int main(void)
             bool callStart = CheckCollisionRecs(startButton, mouseRect);
             bool callSetting = CheckCollisionRecs(startSetting, mouseRect);
             bool callEnd = CheckCollisionRecs(startEnd, mouseRect);
-
+            bool soundTF = CheckCollisionRecs(soundRect, mouseRect);
+            
             BeginDrawing();
             ClearBackground(RAYWHITE);
 
@@ -68,10 +73,19 @@ int main(void)
             {
                 DrawRectangle(0, 0 ,screenWidth, screenHeight, GRAY);
                 
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+                {
+                    if (soundTF)
+                    {
+                        if (sound) sound = false;
+                        else if (!sound) sound = true;
+                    }
+                }
+
                 DrawText("Sound", 5, 50, 50, WHITE);
-                DrawRectangle (200, 50, 50, 50, BLACK);
+                DrawRectangle (soundRect.x, soundRect.y, soundRect.width, soundRect.height, BLACK);
                 DrawRectangle (205, 56, 40, 38, WHITE);
-                DrawRectangle (210, 61, 30, 30, GREEN);
+                if (sound) DrawRectangle (210, 61, 30, 30, GREEN);
             }
 
             EndDrawing();
