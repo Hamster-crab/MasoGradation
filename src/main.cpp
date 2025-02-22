@@ -21,7 +21,7 @@ int main(void)
     const float mouseSensitivity = 0.003f; // マウス感度
 
     bool sampleZimen = false;
-    bool title = false;
+    bool title = true;
 
     bool setting = false;
 
@@ -67,6 +67,10 @@ int main(void)
             if (setting)
             {
                 DrawRectangle(0, 0 ,screenWidth, screenHeight, GRAY);
+                
+                DrawText("volume", 5, 50, 50, WHITE);
+                DrawRectangle (200, 50, 50, 50, BLACK);
+                DrawRectangle (205, 56, 40, 38, WHITE);
             }
 
             EndDrawing();
