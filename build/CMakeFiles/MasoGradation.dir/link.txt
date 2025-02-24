@@ -1,1 +1,1 @@
-/usr/bin/c++ -g CMakeFiles/MasoGradation.dir/src/blender.cpp.o -o MasoGradation  -Wl,-rpath,/usr/local/lib /usr/local/lib/libraylib.a -L/usr/local/lib -lraylib
+/usr/bin/c++ -g CMakeFiles/MasoGradation.dir/src/main.cpp.o -o MasoGradation  -Wl,-rpath,/usr/local/lib /usr/local/lib/libraylib.a -L/usr/local/lib -lraylib

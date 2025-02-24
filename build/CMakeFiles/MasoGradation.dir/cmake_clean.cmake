@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/MasoGradation.dir/src/blender.cpp.o"
-  "CMakeFiles/MasoGradation.dir/src/blender.cpp.o.d"
+  "CMakeFiles/MasoGradation.dir/src/main.cpp.o"
+  "CMakeFiles/MasoGradation.dir/src/main.cpp.o.d"
   "MasoGradation"
   "MasoGradation.pdb"
 )

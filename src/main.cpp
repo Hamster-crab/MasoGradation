@@ -8,6 +8,10 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Maso Gradation");
 
+    Model sampleobjmodel = LoadModel("resources/OBJ/RubberDuck_LOD0.obj");
+    Texture2D tex = LoadTexture("resources/OBJ/RubberDuck_AlbedoTransparency.png");
+    sampleobjmodel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = tex;
+
     //SetAudioStreamBufferSizeDefault(4096); 
     InitAudioDevice();
 
@@ -22,6 +26,10 @@ int main(void)
     float cameraRotationY = 0.0f; // カメラの水平回転角度
     float cameraRotationX = 0.0f; // カメラの垂直回転角度
     const float mouseSensitivity = 0.003f; // マウス感度
+
+    Vector3 sampleobjpos = {0.0f,0.0f,0.0f};
+    Vector3 sampleobjpos2 = {200.0f,1.0f,0.0f};
+    BoundingBox sampleobjbounds = GetMeshBoundingBox(sampleobjmodel.meshes[0]);
 
     bool sampleZimen = false;
     bool title = true;
@@ -44,9 +52,16 @@ int main(void)
     Texture2D BackTextureSample = LoadTextureFromImage(BackImageSample);
     UnloadImage(BackImageSample);
 
+    Image mouseImageSample = LoadImage("resources/Title/BackImage/BackImage.png");
+    ImageResize(&mouseImageSample, 30, 30);
+    Texture2D mouseTextureSample = LoadTextureFromImage(mouseImageSample);
+    UnloadImage(mouseImageSample);
+
     Music titleMusic = LoadMusicStream("Music/IkeIke/hAYASHI.mp3");
     titleMusic.stream.sampleRate = 44100; 
     SetMusicVolume(titleMusic, 1.0f);
+
+    DisableCursor();  // マウスカーソルを非表示にする
 
     SetTargetFPS(60);
 
@@ -74,6 +89,8 @@ int main(void)
             //DrawTexture(BackTextureLogo, 0, 0, WHITE);
             //DrawTexture(BackTextureButton, 0, 0, WHITE);
             DrawTexture(BackTextureSample, 0, 0, WHITE);
+
+            DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, WHITE);
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
@@ -109,7 +126,6 @@ int main(void)
         }
         else if (!title)
         {
-            DisableCursor();  // マウスカーソルを非表示にする
             Vector2 mouseDelta = GetMouseDelta();
 
             cameraRotationY -= mouseDelta.x * mouseSensitivity; // 水平回転の符号を反転
@@ -172,15 +188,20 @@ int main(void)
             DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
             DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
 
+            DrawModel(sampleobjmodel, sampleobjpos, 1.0f, WHITE);
+            DrawModel(sampleobjmodel, sampleobjpos2, 1.0f, WHITE);
+
             if (sampleZimen)
             {
-                //グリッドの描画
-                for (int x = -10; x <= 10; x++) {
-                    for (int z = -10; z <= 10; z++) {
-                        Color color = ((x + z) % 2 == 0) ? LIGHTGRAY : WHITE;
-                        DrawCube((Vector3){ static_cast<float>(x), 0.0f, static_cast<float>(z) }, 1.0f, 0.1f, 1.0f, color);
-                    }
-                }
+                ////グリッドの描画
+                //for (int x = -10; x <= 10; x++) {
+                //    for (int z = -10; z <= 10; z++) {
+                //        Color color = ((x + z) % 2 == 0) ? LIGHTGRAY : WHITE;
+                //        DrawCube((Vector3){ static_cast<float>(x), 0.0f, static_cast<float>(z) }, 1.0f, 0.1f, 1.0f, color);
+                //    }
+                //}
+
+                DrawGrid(20, 10.0f);
             }
 
                 EndMode3D();

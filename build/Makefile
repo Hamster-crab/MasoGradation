@@ -129,29 +129,29 @@ MasoGradation/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/build
 .PHONY : MasoGradation/fast
 
-src/blender.o: src/blender.cpp.o
-.PHONY : src/blender.o
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
 
 # target to build an object file
-src/blender.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/blender.cpp.o
-.PHONY : src/blender.cpp.o
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
 
-src/blender.i: src/blender.cpp.i
-.PHONY : src/blender.i
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-src/blender.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/blender.cpp.i
-.PHONY : src/blender.cpp.i
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-src/blender.s: src/blender.cpp.s
-.PHONY : src/blender.s
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-src/blender.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/blender.cpp.s
-.PHONY : src/blender.cpp.s
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MasoGradation"
-	@echo "... src/blender.o"
-	@echo "... src/blender.i"
-	@echo "... src/blender.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 

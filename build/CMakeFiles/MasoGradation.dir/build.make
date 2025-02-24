@@ -69,28 +69,28 @@ include CMakeFiles/MasoGradation.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/MasoGradation.dir/flags.make
 
-CMakeFiles/MasoGradation.dir/src/blender.cpp.o: CMakeFiles/MasoGradation.dir/flags.make
-CMakeFiles/MasoGradation.dir/src/blender.cpp.o: /home/kitano-hideaki/Documents/git/MasoGradation/src/blender.cpp
-CMakeFiles/MasoGradation.dir/src/blender.cpp.o: CMakeFiles/MasoGradation.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kitano-hideaki/Documents/git/MasoGradation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MasoGradation.dir/src/blender.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MasoGradation.dir/src/blender.cpp.o -MF CMakeFiles/MasoGradation.dir/src/blender.cpp.o.d -o CMakeFiles/MasoGradation.dir/src/blender.cpp.o -c /home/kitano-hideaki/Documents/git/MasoGradation/src/blender.cpp
+CMakeFiles/MasoGradation.dir/src/main.cpp.o: CMakeFiles/MasoGradation.dir/flags.make
+CMakeFiles/MasoGradation.dir/src/main.cpp.o: /home/kitano-hideaki/Documents/git/MasoGradation/src/main.cpp
+CMakeFiles/MasoGradation.dir/src/main.cpp.o: CMakeFiles/MasoGradation.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kitano-hideaki/Documents/git/MasoGradation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MasoGradation.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MasoGradation.dir/src/main.cpp.o -MF CMakeFiles/MasoGradation.dir/src/main.cpp.o.d -o CMakeFiles/MasoGradation.dir/src/main.cpp.o -c /home/kitano-hideaki/Documents/git/MasoGradation/src/main.cpp
 
-CMakeFiles/MasoGradation.dir/src/blender.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MasoGradation.dir/src/blender.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kitano-hideaki/Documents/git/MasoGradation/src/blender.cpp > CMakeFiles/MasoGradation.dir/src/blender.cpp.i
+CMakeFiles/MasoGradation.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MasoGradation.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kitano-hideaki/Documents/git/MasoGradation/src/main.cpp > CMakeFiles/MasoGradation.dir/src/main.cpp.i
 
-CMakeFiles/MasoGradation.dir/src/blender.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MasoGradation.dir/src/blender.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kitano-hideaki/Documents/git/MasoGradation/src/blender.cpp -o CMakeFiles/MasoGradation.dir/src/blender.cpp.s
+CMakeFiles/MasoGradation.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MasoGradation.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kitano-hideaki/Documents/git/MasoGradation/src/main.cpp -o CMakeFiles/MasoGradation.dir/src/main.cpp.s
 
 # Object files for target MasoGradation
 MasoGradation_OBJECTS = \
-"CMakeFiles/MasoGradation.dir/src/blender.cpp.o"
+"CMakeFiles/MasoGradation.dir/src/main.cpp.o"
 
 # External object files for target MasoGradation
 MasoGradation_EXTERNAL_OBJECTS =
 
-MasoGradation: CMakeFiles/MasoGradation.dir/src/blender.cpp.o
+MasoGradation: CMakeFiles/MasoGradation.dir/src/main.cpp.o
 MasoGradation: CMakeFiles/MasoGradation.dir/build.make
 MasoGradation: /usr/local/lib/libraylib.a
 MasoGradation: CMakeFiles/MasoGradation.dir/link.txt

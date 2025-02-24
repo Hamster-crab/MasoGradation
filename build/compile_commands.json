@@ -1,8 +1,8 @@
 [
 {
   "directory": "/home/kitano-hideaki/Documents/git/MasoGradation/build",
-  "command": "/usr/bin/c++   -g -std=gnu++17 -I/usr/local/include -o CMakeFiles/MasoGradation.dir/src/blender.cpp.o -c /home/kitano-hideaki/Documents/git/MasoGradation/src/blender.cpp",
-  "file": "/home/kitano-hideaki/Documents/git/MasoGradation/src/blender.cpp",
-  "output": "CMakeFiles/MasoGradation.dir/src/blender.cpp.o"
+  "command": "/usr/bin/c++   -g -std=gnu++17 -I/usr/local/include -o CMakeFiles/MasoGradation.dir/src/main.cpp.o -c /home/kitano-hideaki/Documents/git/MasoGradation/src/main.cpp",
+  "file": "/home/kitano-hideaki/Documents/git/MasoGradation/src/main.cpp",
+  "output": "CMakeFiles/MasoGradation.dir/src/main.cpp.o"
 }
 ]
