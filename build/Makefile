@@ -67,8 +67,8 @@ CMAKE_BINARY_DIR = /home/kitano-hideaki/Documents/git/MasoGradation/build
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -129,29 +129,29 @@ MasoGradation/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/build
 .PHONY : MasoGradation/fast
 
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
+src/blender.o: src/blender.cpp.o
+.PHONY : src/blender.o
 
 # target to build an object file
-src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
+src/blender.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/blender.cpp.o
+.PHONY : src/blender.cpp.o
 
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
+src/blender.i: src/blender.cpp.i
+.PHONY : src/blender.i
 
 # target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
+src/blender.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/blender.cpp.i
+.PHONY : src/blender.cpp.i
 
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
+src/blender.s: src/blender.cpp.s
+.PHONY : src/blender.s
 
 # target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+src/blender.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MasoGradation.dir/build.make CMakeFiles/MasoGradation.dir/src/blender.cpp.s
+.PHONY : src/blender.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MasoGradation"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
+	@echo "... src/blender.o"
+	@echo "... src/blender.i"
+	@echo "... src/blender.s"
 .PHONY : help
 
 

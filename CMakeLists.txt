@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(raylib REQUIRED)
 
-add_executable(MasoGradation src/main.cpp)
+add_executable(MasoGradation src/blender.cpp)
 target_link_libraries(MasoGradation raylib)
