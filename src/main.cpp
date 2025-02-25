@@ -34,7 +34,7 @@ int main(void)
     bool sampleZimen = false;
     bool title = true;
 
-    bool sound = false;
+    bool sound = true;
     bool mouseHayashi = true;
 
     bool titSet = true;
@@ -60,13 +60,13 @@ int main(void)
     Texture2D mouseTextureSample = LoadTextureFromImage(mouseImageSample);
     UnloadImage(mouseImageSample);
 
-    Music titleMusic = LoadMusicStream("Music/IkeIke/hAYASHI.mp3");
+    Music titleMusic = LoadMusicStream("Music/IkeIke/ヤジュセンパイイキスギンイクイクアッアッアッアーヤリマスネ(コウジの回想) ハクシンしんちゃん 嵐を呼ぶ ブッチッパ! ホモビ 帝国の逆襲 劇中歌.mp3.mp3");
     titleMusic.stream.sampleRate = 44100; 
     SetMusicVolume(titleMusic, 1.0f);
 
     DisableCursor();  // マウスカーソルを非表示にする
 
-    SetTargetFPS(60);
+    SetTargetFPS(30);
 
     while (!WindowShouldClose())        // ESCで強制終了
     {
