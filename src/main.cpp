@@ -37,12 +37,15 @@ int main(void)
     bool sound = false;
     bool mouseHayashi = true;
 
+    bool titSet = true;
+
     bool setting = false;
 
 
     Rectangle startButton = { 300, 360, 230, 80 };
     Rectangle startSetting = { 350, 450, 123, 65 };
     Rectangle startEnd = { 350, 528, 123, 65 };
+    Rectangle startEndSet = { screenWidth / 2 - 50, 500, 100, 40 };
 
     Rectangle soundRect = { 200, 50, 50, 50 };
     Rectangle mouseHayashiRect = { 200, 150, 50, 50 };
@@ -80,6 +83,7 @@ int main(void)
             bool callSetting = CheckCollisionRecs(startSetting, mouseRect);
             bool callEnd = CheckCollisionRecs(startEnd, mouseRect);
             bool soundTF = CheckCollisionRecs(soundRect, mouseRect);
+            bool callEndSet = CheckCollisionRecs(startEndSet, mouseRect);
             bool mouseHayashi = CheckCollisionRecs(mouseHayashiRect, mouseRect);
             
             BeginDrawing();
@@ -94,9 +98,12 @@ int main(void)
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
-                if (callStart) title = false;
-                if (callSetting) setting = true;
-                if (callEnd) break;
+                if (titSet)
+                {
+                    if (callStart) title = false;
+                    if (callSetting) setting = true;
+                    if (callEnd) break;
+                }
             }
 
             if (setting)
@@ -110,6 +117,7 @@ int main(void)
                         if (sound) sound = false;
                         else if (!sound) sound = true;
                     }
+                    if (callEndSet) break;
                 }
 
                 DrawText("Sound", 5, 50, 50, WHITE);
@@ -120,8 +128,10 @@ int main(void)
                 DrawText("Hayashi", 5, 150, 50, WHITE);
                 DrawRectangle (mouseHayashiRect.x, mouseHayashiRect.y, mouseHayashiRect.width, mouseHayashiRect.height, BLACK);
                 //DrawRectangle (mouseHayashiRect.x + 5)
+                DrawRectangle (screenWidth / 2 - 50, 500, 100, 40, WHITE);
+                DrawText ("EXIT", screenWidth / 2 - 50, 500, 40, BLACK);
             }
-            DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, WHITE);
+            DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, BLACK);
 
             EndDrawing();
         }
