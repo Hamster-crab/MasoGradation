@@ -121,6 +121,7 @@ int main(void)
                 DrawRectangle (mouseHayashiRect.x, mouseHayashiRect.y, mouseHayashiRect.width, mouseHayashiRect.height, BLACK);
                 //DrawRectangle (mouseHayashiRect.x + 5)
             }
+            DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, WHITE);
 
             EndDrawing();
         }
