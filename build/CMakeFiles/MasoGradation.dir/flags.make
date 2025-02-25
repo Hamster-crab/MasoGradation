@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = 
 
-CXX_FLAGS = -std=gnu++17 -I/usr/local/include
+CXX_FLAGS = -g -std=gnu++17 -I/usr/local/include
 

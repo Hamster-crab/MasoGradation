@@ -52,8 +52,8 @@ int main(void)
     Texture2D BackTextureSample = LoadTextureFromImage(BackImageSample);
     UnloadImage(BackImageSample);
 
-    Image mouseImageSample = LoadImage("resources/mouse/image.jpg");
-    ImageResize(&mouseImageSample, 30, 30);
+    Image mouseImageSample = LoadImage("resources/mouse/moouse.png");
+    ImageResize(&mouseImageSample, 50, 50);
     Texture2D mouseTextureSample = LoadTextureFromImage(mouseImageSample);
     UnloadImage(mouseImageSample);
 
