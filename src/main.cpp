@@ -8,19 +8,22 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Maso Gradation");
 
-    Model sampleobjmodel = LoadModel("resources/OBJ/RubberDuck_LOD0.obj");
-    Texture2D tex = LoadTexture("resources/OBJ/RubberDuck_AlbedoTransparency.png");
-    sampleobjmodel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = tex;
+    Model sampleobjmodel = LoadModel("resources/OBJ/RubberDuck_LOD0.obj"); // OBJファイル
+    Texture2D tex = LoadTexture("resources/OBJ/RubberDuck_AlbedoTransparency.png"); // OBJファイルの貼り付け画像
+    sampleobjmodel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = tex; // 田村
 
     //SetAudioStreamBufferSizeDefault(4096); 
     InitAudioDevice();
 
+    // =====================================================================
+    // カメラの設定
     Camera3D camera = { 0 };
     camera.position = (Vector3){ 0.0f, 2.0f, 4.0f };
     camera.target = (Vector3){ 0.0f, 2.0f, 0.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 45.0f;
     camera.projection = CAMERA_PERSPECTIVE;
+    // =====================================================================
 
     float cameraSpeed = 0.2f;
     float cameraRotationY = 0.0f; // カメラの水平回転角度
@@ -31,6 +34,7 @@ int main(void)
     Vector3 sampleobjpos2 = {200.0f,1.0f,0.0f};
     BoundingBox sampleobjbounds = GetMeshBoundingBox(sampleobjmodel.meshes[0]);
 
+    // グリッド
     bool sampleZimen = false;
     bool title = true;
 
