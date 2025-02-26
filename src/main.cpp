@@ -207,8 +207,8 @@ int main(void)
             DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
             DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
 
-            DrawModel(sampleobjmodel, sampleobjpos, 1.0f, WHITE);
-            DrawModel(sampleobjmodel, sampleobjpos2, 1.0f, WHITE);
+            DrawModel(sampleobjmodel, sampleobjpos, 0.01f, WHITE);
+            DrawModel(sampleobjmodel, sampleobjpos2, 0.01f, WHITE);
 
             if (sampleZimen)
             {
