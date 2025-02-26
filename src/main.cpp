@@ -221,6 +221,8 @@ int main(void)
 
                 EndMode3D();
 
+                // FPS表示
+                DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f/deltaTime)), GetScreenWidth() - 220, 40, 20, GREEN);
                 // カメラ位置の表示
                 DrawText(TextFormat("Camera Position: [%.2f, %.2f, %.2f]", camera.position.x, camera.position.y, camera.position.z), 10, 10, 20, DARKGRAY);
 
