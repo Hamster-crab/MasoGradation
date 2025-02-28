@@ -133,7 +133,7 @@ int main(void)
                 DrawRectangle (mouseHayashiRect.x, mouseHayashiRect.y, mouseHayashiRect.width, mouseHayashiRect.height, BLACK);
                 //DrawRectangle (mouseHayashiRect.x + 5)
                 DrawRectangle (screenWidth / 2 - 50, 500, 100, 40, WHITE);
-                DrawText ("EXIT", screenWidth / 2 - 50, 500, 40, BLACK);
+                DrawText ("Ikuma no purupuru na Abura", screenWidth / 2 - 50, 500, 40, BLACK);
             }
             DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, BLACK);
 
