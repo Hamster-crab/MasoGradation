@@ -92,7 +92,7 @@ MasoGradation_EXTERNAL_OBJECTS =
 
 MasoGradation: CMakeFiles/MasoGradation.dir/src/main.cpp.o
 MasoGradation: CMakeFiles/MasoGradation.dir/build.make
-MasoGradation: /usr/local/lib/libraylib.a
+MasoGradation: /usr/local/lib64/libraylib.a
 MasoGradation: CMakeFiles/MasoGradation.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kitano-hideaki/Documents/git/MasoGradation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable MasoGradation"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MasoGradation.dir/link.txt --verbose=$(VERBOSE)

@@ -36,7 +36,7 @@ int main(void)
 
     // グリッド
     bool sampleZimen = false;
-    bool title = true;
+    bool title = false;
 
     bool sound = true;
     bool mouseHayashi = true;
@@ -141,9 +141,9 @@ int main(void)
         }
         else if (!title)
         {
-            IkumaoldTime = newTime;
-            IkumanewTime = GetTime();
-            IkumadeltaTime = (IkumanewTime - IkumaoldTime) * 500;
+//            IkumaoldTime = newTime;
+//            IkumanewTime = GetTime();
+//            IkumadeltaTime = (IkumanewTime - IkumaoldTime) * 500;
             
             Vector2 mouseDelta = GetMouseDelta();
 
@@ -204,7 +204,9 @@ int main(void)
 
             BeginMode3D(camera);
 
-            DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
+            DrawCube((Vector3){camera.position.x + 20, 0.0f, 0.0f}, 0.5f, 0.5f, 0.5f, GREEN);
+
+            //DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
             DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
 
             DrawModel(sampleobjmodel, sampleobjpos, 0.01f, WHITE);
