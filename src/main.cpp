@@ -36,7 +36,7 @@ int main(void)
 
     // グリッド
     bool sampleZimen = false;
-    bool title = false;
+    bool title = true;
 
     bool sound = true;
     bool mouseHayashi = true;
@@ -44,6 +44,8 @@ int main(void)
     bool titSet = true;
 
     bool setting = false;
+
+    bool mouse = true;
 
 
     Rectangle startButton = { 300, 360, 230, 80 };
@@ -67,8 +69,6 @@ int main(void)
     Music titleMusic = LoadMusicStream("Music/IkeIke/ヤジュセンパイイキスギンイクイクアッアッアッアーヤリマスネ(コウジの回想) ハクシンしんちゃん 嵐を呼ぶ ブッチッパ! ホモビ 帝国の逆襲 劇中歌.mp3.mp3");
     titleMusic.stream.sampleRate = 44100; 
     SetMusicVolume(titleMusic, 1.0f);
-
-    DisableCursor();  // マウスカーソルを非表示にする
 
     SetTargetFPS(30);
 
@@ -141,11 +141,17 @@ int main(void)
         }
         else if (!title)
         {
-//            IkumaoldTime = newTime;
-//            IkumanewTime = GetTime();
-//            IkumadeltaTime = (IkumanewTime - IkumaoldTime) * 500;
-            
-            Vector2 mouseDelta = GetMouseDelta();
+          HideCursor();
+          Vector2 mousePos = GetMousePosition();
+
+          // 画面の範囲を超えないように補正
+          float clampedX = fmax(0, fmin(mousePos.x, screenWidth - 1));
+          float clampedY = fmax(0, fmin(mousePos.y, screenHeight - 1));
+          if (mousePos.x != clampedX || mousePos.y != clampedY) {
+            SetMousePosition(clampedX, clampedY);
+          }
+         
+          Vector2 mouseDelta = GetMouseDelta();
 
             cameraRotationY -= mouseDelta.x * mouseSensitivity; // 水平回転の符号を反転
             cameraRotationX -= mouseDelta.y * mouseSensitivity; // 垂直回転の符号を反転
