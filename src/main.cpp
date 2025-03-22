@@ -72,12 +72,14 @@ int main(void)
 
     SetTargetFPS(30);
 
+    DisableCursor();
     while (!WindowShouldClose())        // ESCで強制終了
     {
         if (sound && !IsMusicStreamPlaying(titleMusic)) PlayMusicStream(titleMusic);
         UpdateMusicStream(titleMusic);
         if (title)
         {
+	    IsCursorOnScreen();
             if (sound) PlayMusicStream(titleMusic);
             Vector2 mousePoint = GetMousePosition();
             // マウス座標を小さな矩形に変換
@@ -96,9 +98,9 @@ int main(void)
             //DrawTexture(BackTexture, 0, 0, WHITE);
             //DrawTexture(BackTextureLogo, 0, 0, WHITE);
             //DrawTexture(BackTextureButton, 0, 0, WHITE);
-            DrawTexture(BackTextureSample, 0, 0, WHITE);
+            //DrawTexture(BackTextureSample, 0, 0, WHITE);
 
-            DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, WHITE);
+            //DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, WHITE);
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
@@ -141,15 +143,15 @@ int main(void)
         }
         else if (!title)
         {
-          HideCursor();
-          Vector2 mousePos = GetMousePosition();
+          //HideCursor();
+          //Vector2 mousePos = GetMousePosition();
 
-          // 画面の範囲を超えないように補正
-          float clampedX = fmax(0, fmin(mousePos.x, screenWidth - 1));
-          float clampedY = fmax(0, fmin(mousePos.y, screenHeight - 1));
-          if (mousePos.x != clampedX || mousePos.y != clampedY) {
-            SetMousePosition(clampedX, clampedY);
-          }
+          //// 画面の範囲を超えないように補正
+          //float clampedX = fmax(0, fmin(mousePos.x, screenWidth - 1));
+          //float clampedY = fmax(0, fmin(mousePos.y, screenHeight - 1));
+          //if (mousePos.x != clampedX || mousePos.y != clampedY) {
+          //  SetMousePosition(clampedX, clampedY);
+          //}
          
           Vector2 mouseDelta = GetMouseDelta();
 

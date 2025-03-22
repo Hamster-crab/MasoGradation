@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/MasoGradation.dir/link.d"
   "CMakeFiles/MasoGradation.dir/src/main.cpp.o"
   "CMakeFiles/MasoGradation.dir/src/main.cpp.o.d"
   "MasoGradation"
