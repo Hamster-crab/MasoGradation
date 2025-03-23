@@ -98,7 +98,7 @@ int main(void)
             //DrawTexture(BackTexture, 0, 0, WHITE);
             //DrawTexture(BackTextureLogo, 0, 0, WHITE);
             //DrawTexture(BackTextureButton, 0, 0, WHITE);
-            //DrawTexture(BackTextureSample, 0, 0, WHITE);
+            DrawTexture(BackTextureSample, 0, 0, WHITE);
 
             //DrawTexture(mouseTextureSample, mouseRect.x, mouseRect.y, WHITE);
 
