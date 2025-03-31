@@ -24,11 +24,11 @@ void saveBlocks(const std::vector<Block>& blocks , const std::string& filename) 
     }
 }
 
-void drawCubeSample(Vector3 position, float width, float height, float length, Color color)
-{
-    DrawCube(
+//void drawCubeSample(Vector3 position, float width, float height, float length, Color color)
+//{
+//    DrawCube(
 
-int main()
+int main(int argc, char* argv[])
 {
     const int screenWidth = 800;
     const int screenHeight = 600;
@@ -76,6 +76,7 @@ int main()
 
     bool mouse = true;
 
+    bool DevelopMode = false;
 
     Rectangle startButton = { 300, 360, 230, 80 };
     Rectangle startSetting = { 350, 450, 123, 65 };
@@ -101,9 +102,48 @@ int main()
 
     SetTargetFPS(30);
 
+//========================================================================================================================
+    std::string titleCheck;
+    // コマンドライン引数を解析
+    for (int i = 1; i < argc; ++i)
+    {
+        if (std::string(argv[i]) == "--develop" || std::string(argv[i]) == "-d")
+	{
+	    DevelopMode = true;
+        }
+	if (std::string(argv[i]) == "--title" || std::string(argv[i]) == "-t")
+	{
+	    std::cout << "タイトル画面を本当に表示しませんか？ [Y/n] ";
+	    std::cin >> titleCheck;
+	    std::cout << "\n";
+	    if (titleCheck == "y" || titleCheck == "Y")
+	    {
+		title = false;
+	    }
+	    else if (titleCheck == "n" || titleCheck == "N")
+	    {
+		title = true;
+	    }
+	}
+    }
+//========================================================================================================================
     DisableCursor();
     while (!WindowShouldClose())        // ESCで強制終了
     {
+        if (IsKeyDown(KEY_F5))
+        {
+	     if (DevelopMode) DevelopMode = false;
+	     else if (!DevelopMode) DevelopMode = true;
+    	}
+    	if (DevelopMode)
+    	{
+	     if (IsKeyDown(KEY_T))
+	     {
+	          if (title) title = false;
+	          else if (!title) title = true;
+	     }
+	}
+		
         if (sound && !IsMusicStreamPlaying(titleMusic)) PlayMusicStream(titleMusic);
         UpdateMusicStream(titleMusic);
         if (title)
@@ -247,13 +287,17 @@ int main()
 
             BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(SKYBLUE);
 
             BeginMode3D(camera);
+	    
+	    DrawCube((Vector3){0.0f, 20.0f, 0.0f}, 10.0f, 5.0f, 10.0f, WHITE);
+	    DrawCubeWires((Vector3){0.0f, 20.0f, 0.0f}, 10.0f, 5.0f, 10.0f, GRAY);
+
 
             DrawCube((Vector3){camera.position.x + 20, 0.0f, 0.0f}, 0.5f, 0.5f, 0.5f, GREEN);
 
-            //DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
+            DrawCube((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, RED);
             DrawCubeWires((Vector3){ 1.0f, 0.5f, 0.0f }, 1.0f, 1.0f, 1.0f, MAROON);
 
             DrawModel(sampleobjmodel, sampleobjpos, 0.01f, WHITE);
