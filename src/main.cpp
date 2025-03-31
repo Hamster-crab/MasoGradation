@@ -1,7 +1,34 @@
 #include <raylib.h>
 #include <cmath>  // sinfおよびcosfを使用するために必要
+#include <iostream>
+#include <fstream>
+#include <vector>
 
-int main(void)
+struct Block {
+    int type;
+    float x;
+    float y;
+    float z;
+};
+
+// ブロック情報をファイルに保存
+void saveBlocks(const std::vector<Block>& blocks , const std::string& filename) {
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        for (const auto& block : blocks) {
+            file << block.type << " " << block.x << " " << block.y << " " << block.z << std::endl;
+        }
+        file.close();
+    } else {
+        std::cerr << "ファイルを開けませんでした: " << filename << std::endl;
+    }
+}
+
+void drawCubeSample(Vector3 position, float width, float height, float length, Color color)
+{
+    DrawCube(
+
+int main()
 {
     const int screenWidth = 800;
     const int screenHeight = 600;
@@ -24,6 +51,8 @@ int main(void)
     camera.fovy = 45.0f;
     camera.projection = CAMERA_PERSPECTIVE;
     // =====================================================================
+
+    std::vector<Block> blocks;
 
     float cameraSpeed = 0.2f;
     float cameraRotationY = 0.0f; // カメラの水平回転角度
@@ -143,6 +172,16 @@ int main(void)
         }
         else if (!title)
         {
+	  if (IsKeyDown(KEY_ESCAPE))
+	  {
+	    break;
+	    saveBlocks(blocks, "blocks.txt");
+	  }
+	  // ブロックを追加 (例)
+          Block block1 = {1, 0.0f, 0.0f, 0.0f};
+          Block block2 = {2, 1.0f, 2.0f, 3.0f};
+          blocks.push_back(block1);
+          blocks.push_back(block2);
           //HideCursor();
           //Vector2 mousePos = GetMousePosition();
 
