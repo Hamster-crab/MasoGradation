@@ -35,6 +35,8 @@ int main(int argc, char* argv[])
 
     InitWindow(screenWidth, screenHeight, "Maso Gradation");
 
+    SetExitKey(KEY_NULL);  // ESC キー終了を無効化
+
     Model sampleobjmodel = LoadModel("resources/OBJ/RubberDuck_LOD0.obj"); // OBJファイル
     Texture2D tex = LoadTexture("resources/OBJ/RubberDuck_AlbedoTransparency.png"); // OBJファイルの貼り付け画像
     sampleobjmodel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = tex; // 田村
@@ -128,27 +130,27 @@ int main(int argc, char* argv[])
     }
 //========================================================================================================================
     DisableCursor();
-    while (!WindowShouldClose())        // ESCで強制終了
+    while (!WindowShouldClose())
     {
         if (IsKeyDown(KEY_F5))
         {
-	     if (DevelopMode) DevelopMode = false;
-	     else if (!DevelopMode) DevelopMode = true;
-    	}
-    	if (DevelopMode)
-    	{
-	     if (IsKeyDown(KEY_T))
-	     {
+	        if (DevelopMode) DevelopMode = false;
+	        else if (!DevelopMode) DevelopMode = true;
+    	  }
+    	  if (DevelopMode)
+    	  {
+	        if (IsKeyDown(KEY_T))
+	        {
 	          if (title) title = false;
 	          else if (!title) title = true;
-	     }
-	}
+	        }
+	      }
 		
         if (sound && !IsMusicStreamPlaying(titleMusic)) PlayMusicStream(titleMusic);
         UpdateMusicStream(titleMusic);
         if (title)
         {
-	    IsCursorOnScreen();
+	      IsCursorOnScreen();
             if (sound) PlayMusicStream(titleMusic);
             Vector2 mousePoint = GetMousePosition();
             // マウス座標を小さな矩形に変換
@@ -212,16 +214,29 @@ int main(int argc, char* argv[])
         }
         else if (!title)
         {
-	  if (IsKeyDown(KEY_ESCAPE))
-	  {
-	    break;
-	    saveBlocks(blocks, "blocks.txt");
-	  }
+	        // ESCキーで終了 + セーブ
+          if (IsKeyPressed(KEY_ESCAPE))
+          {
+            if (blocks.empty()) // すでにブロック追加済みか確認
+            {
+              // 例: 初期ブロックを1度だけ追加
+              Block block1 = {1, 0.0f, 0.0f, 0.0f};
+              Block block2 = {2, 1.0f, 2.0f, 3.0f};
+              blocks.push_back(block1);
+              blocks.push_back(block2);
+            }
+            std::cout << "ブロック数: " << blocks.size() << std::endl;
+            saveBlocks(blocks, "blocks.txt");  
+            break;
+          }
+
+
 	  // ブロックを追加 (例)
           Block block1 = {1, 0.0f, 0.0f, 0.0f};
           Block block2 = {2, 1.0f, 2.0f, 3.0f};
           blocks.push_back(block1);
           blocks.push_back(block2);
+
           //HideCursor();
           //Vector2 mousePos = GetMousePosition();
 
